@@ -14,13 +14,7 @@ t = np.linspace(t_min, t_max, num=int((t_max-t_min)/h))
 init = 7
 
 # ODE (Ordinary Differential Equation)
-# (dy/dt = 1-x)
-# (y = Ce^(-t)+1)
-def function(y, t):
-    return 1 - y
 
-def solution(t, c=6):
-    return c * np.exp(-t) + 1
 
 # solve the ODE
 sol = odeint(function, init, t)
