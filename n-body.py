@@ -1,4 +1,8 @@
 import numpy as np
+import matplotlib.pyplot as plt
+from euler import euler
+from improved import improved_euler
+from rungekutta import rungekutta
 from scipy.integrate import odeint
 
 ## n-body problem setup
@@ -14,6 +18,9 @@ r = [(2.5, 1), (-1, 2), (0, -4)]
 
 # initial velocity
 v = [(5, -2), (0, 3), (1, 1)]
+
+# number of objects
+N = len(m)
 
 m, r, v = map(np.array, (m, r, v))
 
@@ -49,3 +56,45 @@ def component(G, r, m):
 def acceleration(G, r, m):
     comp_x, comp_y = component(G, r, m)
     return comp_x.sum(1), comp_y.sum(1)
+
+def n_body(y, _, G, m):
+    # y: (12) -> (2, 3, 2)
+    y = y.reshape(2, N, 2)
+    r, v = y
+
+    # (3, 2)
+    dr_dt = v
+    dv_dt = np.stack(acceleration(G, r, m), -1)
+
+    # derivative: (2, 3, 2)
+    derivative = np.stack([dr_dt, dv_dt], 0)
+    return derivative.flatten()
+
+## simulate
+
+# step size 0.1
+h = 0.001
+
+# evaluate t between t_min and t_max
+t_min, t_max = 0, 1
+total_num = int((t_max-t_min)/h)
+t = np.linspace(t_min, t_max, num=total_num)
+
+init = np.stack([r, v], 0)
+
+# calculate velocity across time
+out = odeint(n_body, init.flatten(), t, args=(G, m))
+if isinstance(out, list):
+    out = np.stack(out, 0)
+out = out.reshape(-1, 2, N, 2)
+
+r, v = out[:, 0], out[:, 1]
+r = r.transpose(1, 0, 2)
+
+for (x, y) in r[0]:
+    plt.plot(x, y, '-o', color='red')
+for (x, y) in r[1]:
+    plt.plot(x, y, '-o', color='green')
+for (x, y) in r[2]:
+    plt.plot(x, y, '-o', color='blue')
+plt.show()
