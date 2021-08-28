@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import odeint
+from functions import f1, f2, f1_sol, f2_sol
+from functions import f1_args_ex, f2_args_ex
 
 # step size 0.1
 h = 0.1
@@ -13,11 +15,16 @@ t = np.linspace(t_min, t_max, num=int((t_max-t_min)/h))
 # (t = 0, y = 7)
 init = 7
 
-# ODE (Ordinary Differential Equation)
-
-
 # solve the ODE
-sol = odeint(function, init, t)
-plt.plot(t, sol[:, 0], color='red')
-plt.plot(t, solution(t), color='blue')
+sol1 = odeint(f1, init, t, args=f1_args_ex)
+gt1 = f1_sol(t, *f1_args_ex, init)
+
+sol2 = odeint(f2, init, t, args=f2_args_ex)
+gt2 = f2_sol(t, *f2_args_ex, init)
+
+fig, ax = plt.subplots(2)
+ax[0].plot(t, sol1[:, 0], color='red')
+ax[0].plot(t, gt1, color='blue')
+ax[1].plot(t, sol2[:, 0], color='red')
+ax[1].plot(t, gt2, color='blue')
 plt.show()
