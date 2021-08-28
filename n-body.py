@@ -45,3 +45,7 @@ def component(G, r, m):
     comp_x = -G * mass * disp_x / (dist ** 3 + 1e-7)
     comp_y = -G * mass * disp_y / (dist ** 3 + 1e-7)
     return comp_x, comp_y
+
+def acceleration(G, r, m):
+    comp_x, comp_y = component(G, r, m)
+    return comp_x.sum(1), comp_y.sum(1)
