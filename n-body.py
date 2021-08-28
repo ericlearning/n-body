@@ -3,11 +3,14 @@ from scipy.integrate import odeint
 
 ## n-body problem setup
 
+# gravitational constant
+G = 1
+
 # masses
 m = [10, 2, 75]
 
 # coordinates
-r = [(2.5, 1), (-1, 1), (0, -4)]
+r = [(2.5, 1), (-1, 2), (0, -4)]
 
 # initial velocity
 v = [(5, -2), (0, 3), (1, 1)]
@@ -34,3 +37,11 @@ def pairwise_mass(m):
     # m: (n)
     pairwise_mass = m[:, None] @ m[None, :]
     return pairwise_mass
+
+def component(G, r, m):
+    dist = pairwise_dist(r)
+    disp_x, disp_y = pairwise_disp(r)
+    mass = pairwise_mass(m)
+    comp_x = -G * mass * disp_x / (dist ** 3 + 1e-7)
+    comp_y = -G * mass * disp_y / (dist ** 3 + 1e-7)
+    return comp_x, comp_y
