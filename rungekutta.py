@@ -1,3 +1,5 @@
+import numpy as np
+
 def rungekutta(f, y0, ts, args=()):
     ys = [y0]
     n = len(ts)
@@ -12,4 +14,4 @@ def rungekutta(f, y0, ts, args=()):
 
         yn = yn_prev + (k1 + 2 * k2 + 2 * k3 + k4) / 6
         ys.append(yn)
-    return ys
+    return np.stack(ys, 0)

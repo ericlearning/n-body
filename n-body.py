@@ -73,24 +73,22 @@ def n_body(y, _, G, m):
 ## simulate
 
 # step size 0.1
-h = 0.001
+h = 0.01
 
 # evaluate t between t_min and t_max
-t_min, t_max = 0, 1
+t_min, t_max = 0, 10
 total_num = int((t_max-t_min)/h)
 t = np.linspace(t_min, t_max, num=total_num)
 
 init = np.stack([r, v], 0)
 
-# calculate velocity across time
+# calculate position and velocity across time
 out = odeint(n_body, init.flatten(), t, args=(G, m))
-if isinstance(out, list):
-    out = np.stack(out, 0)
 out = out.reshape(-1, 2, N, 2)
-
 r, v = out[:, 0], out[:, 1]
 r = r.transpose(1, 0, 2)
 
+# plotting the points
 for (x, y) in r[0]:
     plt.plot(x, y, '-o', color='red')
 for (x, y) in r[1]:

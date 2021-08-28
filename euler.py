@@ -1,3 +1,5 @@
+import numpy as np
+
 def euler(f, y0, ts, args=()):
     ys = [y0]
     n = len(ts)
@@ -6,4 +8,4 @@ def euler(f, y0, ts, args=()):
         yn_prev = ys[-1]
         yn = yn_prev + h * f(yn_prev, tn_prev, *args)
         ys.append(yn)
-    return ys
+    return np.stack(ys, 0)

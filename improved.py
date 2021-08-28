@@ -1,3 +1,5 @@
+import numpy as np
+
 def improved_euler(f, y0, ts, args=()):
     ys = [y0]
     n = len(ts)
@@ -7,4 +9,4 @@ def improved_euler(f, y0, ts, args=()):
         yn_euler = yn_prev + h * f(yn_prev, tn_prev, *args)
         yn = yn_prev + h * (f(yn_prev, tn_prev, *args) + f(yn_euler, tn, *args)) / 2
         ys.append(yn)
-    return ys
+    return np.stack(ys, 0)
