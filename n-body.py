@@ -11,7 +11,7 @@ from scipy.integrate import odeint
 G = 1
 
 # masses
-m = [10, 2, 75]
+m = [10, 2, 50]
 
 # coordinates
 r = [(2.5, 1), (-1, 2), (0, -4)]
@@ -76,7 +76,7 @@ def n_body(y, _, G, m):
 h = 0.01
 
 # evaluate t between t_min and t_max
-t_min, t_max = 0, 10
+t_min, t_max = 0, 3.3
 total_num = int((t_max-t_min)/h)
 t = np.linspace(t_min, t_max, num=total_num)
 
